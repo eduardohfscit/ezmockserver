@@ -16,6 +16,7 @@ const config = {
   server: {
     httpPort: settings.server.httpPort,
     httpsPort: settings.server.httpsPort,
+    grpcPort: settings.server.grpcPort,
   },
   api: {
     httpPort: settings.api.httpPort,

@@ -7,7 +7,7 @@ data:
     {
       "sessionsDirectory": "./sessions",
       "api": { "httpPort": 3050 },
-      "server": { "httpPort": 3000 },
+      "server": { "httpPort": 3000, "grpcPort": 50051 },
       "proxy": {
         "prefix": [
           { "path": "/path-one", "proxyPass": "https://server-one.com" },
@@ -43,6 +43,7 @@ spec:
           ports:
             - containerPort: 3000
             - containerPort: 3050
+            - containerPort: 50051
           resources:
             requests:
               memory: "256Mi"
@@ -80,6 +81,10 @@ spec:
       protocol: TCP
       name: api
       targetPort: 3050
+    - port: 50051
+      protocol: TCP
+      name: grpc
+      targetPort: 50051
   selector:
     app: ezmockserver
 

@@ -5,3 +5,11 @@ tmp
 /ezmockserver.json
 *.req.json
 .vscode
+
+# Coder
+.coder/
+.coderignore
+
+# IntelliJ
+.idea/
+.DS_Store

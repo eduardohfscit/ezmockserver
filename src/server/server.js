@@ -6,9 +6,11 @@ const Koa = require("koa");
 const koaBody = require("koa-body");
 const koaLogger = require("koa-logger");
 const cors = require("@koa/cors");
-const { server: config } = require("../config/config");
+const grpc = require('@grpc/grpc-js');
+const { server: config, sessionsDirectory } = require("../config/config");
 const errorHandler = require("./middlewares/error-handler-middleware");
 const mockMiddleware = require("./middlewares/mock-middleware");
+const grpcMockMiddleware = require("./middlewares/grpc-mock-middleware");
 const buildResolver = require('../utils/build-resolver');
 const logger = require('../utils/light-logger');
 
@@ -23,8 +25,8 @@ const init = () => {
     app.use(errorHandler);
     app.use(mockMiddleware);
 
-    if (!config.httpPort && !config.httpsPort){
-      throw new Error("server.httpPort or server.httpsPort must be provided")
+    if (!config.httpPort && !config.httpsPort && !config.grpcPort){
+      throw new Error("server.httpPort, server.httpsPort or server.grpcPort must be provided")
     }
 
     const resolver = buildResolver(resolve);
@@ -49,6 +51,18 @@ const init = () => {
       );
       httpsServer.listen(config.httpsPort, () => {
         logger.info(`HTTPS server running at ${config.httpsPort}`);
+        resolver.resolveOne();
+      });
+    }
+
+    if (config.grpcPort) {
+      resolver.addOne();
+      const grpcServer = new grpc.Server();
+
+      grpcMockMiddleware(path.join(sessionsDirectory, "protos"))(grpcServer);
+      grpcServer.bindAsync(`0.0.0.0:${config.grpcPort}`, grpc.ServerCredentials.createInsecure(), () => {
+        grpcServer.start();
+        logger.info(`gRPC server running at ${config.grpcPort}`);
         resolver.resolveOne();
       });
     }

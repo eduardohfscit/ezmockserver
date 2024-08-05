@@ -8,4 +8,5 @@ module.exports = {
   _tracedRequests: [],
   _requestCounter: { "0.0.0.0": 0 },
   _requiredFiles: [],
+  sessionsDirectory: "",
 };

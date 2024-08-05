@@ -41,6 +41,7 @@ const activateSession = async (newSession) => {
     _requestCounter: { "0.0.0.0": { total: 0, requests: {} } },
     _tracedRequests: [],
     _requiredFiles: [],
+    sessionsDirectory: config.sessionsDirectory,
   });
 
   _requiredFiles.forEach((filePath) => delete require.cache[filePath]);

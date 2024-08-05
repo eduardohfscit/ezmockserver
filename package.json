@@ -27,7 +27,9 @@
     "node-fetch": "^2.6.1",
     "prompts": "^2.4.2",
     "qs": "^6.10.1",
-    "unzipper": "^0.10.11"
+    "unzipper": "^0.10.11",
+    "@grpc/grpc-js": "^1.4.1",
+    "@grpc/proto-loader": "^0.6.4"
   },
   "devDependencies": {
     "eslint": "^7.19.0",
